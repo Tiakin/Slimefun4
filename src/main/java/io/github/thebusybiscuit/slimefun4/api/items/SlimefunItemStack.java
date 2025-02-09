@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import io.github.bakedlibs.dough.common.CommonPatterns;
 import io.github.bakedlibs.dough.items.ItemMetaSnapshot;
+import io.github.bakedlibs.dough.items.ItemStackUtil;
 import io.github.bakedlibs.dough.skins.PlayerHead;
 import io.github.bakedlibs.dough.skins.PlayerSkin;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
@@ -49,14 +50,25 @@ public class SlimefunItemStack extends ItemStack {
     private boolean locked = false;
     private String texture = null;
 
+    private static @Nonnull ItemStack getBaseItemStack(@Nonnull ItemStack item) {
+        if (item instanceof SlimefunItemStack) {
+            ItemStack base = new ItemStack(item.getType(), item.getAmount());
+            if (item.hasItemMeta()) {
+                base.setItemMeta(item.getItemMeta());
+            }
+            return base;
+        }
+        return item;
+    }
+
     public SlimefunItemStack(@Nonnull String id, @Nonnull ItemStack item) {
-        super(item);
+        super(getBaseItemStack(item));
 
         Validate.notNull(id, "The Item id must never be null!");
         Validate.isTrue(id.equals(id.toUpperCase(Locale.ROOT)), "Slimefun Item Ids must be uppercase! (e.g. 'MY_ITEM_ID')");
 
         if (Slimefun.instance() == null) {
-            throw new PrematureCodeException("A SlimefunItemStack must never be be created before your Plugin was enabled.");
+            throw new PrematureCodeException("A SlimefunItemStack must never be created before your Plugin was enabled.");
         }
 
         this.id = id;

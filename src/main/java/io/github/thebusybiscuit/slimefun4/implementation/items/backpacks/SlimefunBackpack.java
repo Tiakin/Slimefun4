@@ -68,6 +68,9 @@ public class SlimefunBackpack extends SimpleSlimefunItem<ItemUseHandler> impleme
         if (SlimefunTag.SHULKER_BOXES.isTagged(item.getType())) {
             return false;
         }
+        if (SlimefunTag.BUNDLES.isTagged(item.getType())) {
+            return false;
+        }
 
         return !(itemAsSlimefunItem instanceof SlimefunBackpack);
     }

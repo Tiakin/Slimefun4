@@ -157,11 +157,11 @@ public class AncientPedestal extends SimpleSlimefunItem<BlockDispenseHandler> im
     public void placeItem(@Nonnull Player p, @Nonnull Block b) {
         ItemStack hand = p.getInventory().getItemInMainHand();
         String displayName = ITEM_PREFIX + System.nanoTime();
-        ItemStack displayItem;
+        ItemStack displayItem = CustomItemStack.create(hand, displayName);
         if (hand.hasItemMeta() && hand.getItemMeta().hasLore()) {
-            displayItem = CustomItemStack.create(hand, displayName, hand.getItemMeta().getLore().toArray(new String[0]));
-        } else {
-            displayItem = CustomItemStack.create(hand, displayName);
+            ItemMeta meta = displayItem.getItemMeta();
+            meta.setLore(hand.getItemMeta().getLore());
+            displayItem.setItemMeta(meta);
         }
         displayItem.setAmount(1);
 
